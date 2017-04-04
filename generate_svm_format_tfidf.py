@@ -7,7 +7,7 @@ from sklearn.utils import resample,shuffle
 from sklearn.preprocessing import MinMaxScaler
 seed=1024
 np.random.seed(seed)
-path = "../input/"
+path = "/Users/jerome/Documents/kaggle/quora-question-pairs/data/"
 train = pd.read_csv(path+"train_porter.csv")
 
 
@@ -41,10 +41,12 @@ test_porter_jaccard = pd.read_pickle(path+'test_porter_jaccard.pkl')[:].reshape(
 
 train_len = pd.read_pickle(path+"train_len.pkl")
 test_len = pd.read_pickle(path+"test_len.pkl")
+print("data loaded")
 scaler = MinMaxScaler()
 scaler.fit(np.vstack([train_len,test_len]))
 train_len = scaler.transform(train_len)
 test_len =scaler.transform(test_len)
+print("data scaled")
 
 
 X = ssp.hstack([
@@ -71,8 +73,8 @@ X_t = ssp.hstack([
     ]).tocsr()
 
 
-print X.shape
-print X_t.shape
+print(X.shape)
+print(X_t.shape)
 
 skf = KFold(n_splits=5, shuffle=True, random_state=seed).split(X)
 for ind_tr, ind_te in skf:
@@ -87,6 +89,7 @@ dump_svmlight_file(X,y,path+"X_tfidf.svm")
 del X
 dump_svmlight_file(X_t,np.zeros(X_t.shape[0]),path+"X_t_tfidf.svm")
 del X_t
+print("data dumped")
 
 def oversample(X_ot,y,p=0.165):
     pos_ot = X_ot[y==1]
@@ -100,14 +103,16 @@ def oversample(X_ot,y,p=0.165):
     ot = ssp.vstack([pos_ot, neg_ot]).tocsr()
     y=np.zeros(ot.shape[0])
     y[:pos_ot.shape[0]]=1.0
-    print y.mean()
+    print(y.mean())
     return ot,y
 
 X_train,y_train = oversample(X_train.tocsr(),y_train,p=0.165)
 X_test,y_test = oversample(X_test.tocsr(),y_test,p=0.165)
+print("oversampling done")
 
 X_train,y_train = shuffle(X_train,y_train,random_state=seed)
 
 dump_svmlight_file(X_train,y_train,path+"X_train_tfidf.svm")
 dump_svmlight_file(X_test,y_test,path+"X_test_tfidf.svm")
+print("data dumped")
 

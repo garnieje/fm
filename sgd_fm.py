@@ -384,9 +384,9 @@ class SGD(object):
                 self.update(lr,x,residual)
                 if train_count%50000==0:
                     if train_count ==0:
-                        print '\ttrain_count: %s, current loss: %.6f'%(train_count,0.0)
+                        print('\ttrain_count: %s, current loss: %.6f'%(train_count,0.0))
                     else:
-                        print '\ttrain_count: %s, current loss: %.6f'%(train_count,train_loss/train_count)
+                        print('\ttrain_count: %s, current loss: %.6f'%(train_count,train_loss/train_count))
 
                 train_loss += self.loss_function(y,p)
                 train_count += 1
@@ -405,14 +405,19 @@ class SGD(object):
                 print('Epoch: %s, train loss: %.6f, time: %s'%(epoch,train_loss/train_count,duration))
 
 
-path = "../input/"
+path = "/Users/jerome/Documents/kaggle/quora-question-pairs/data/"
 
 
 sgd = SGD(lr=0.001,adam=True,dropout=0.8,l2=0.00,l2_fm=0.00,task='c',n_components=1,nb_epoch=30,interaction=True,no_norm=False)
 sgd.preload(path+'X_tfidf.svm',path+'X_t_tfidf.svm')
+print("preload done")
 # sgd.load_weights()
 sgd.train(path+'X_train_tfidf.svm',path+'X_test_tfidf.svm',in_memory=False)
+print("train done")
 sgd.load_weights()
+print("weight done")
 sgd.predict(path+'X_test_tfidf.svm',out='valid.csv')
+print("predict valdation done")
 print sgd.validate(path+'X_test_tfidf.svm')
 sgd.predict(path+'X_t_tfidf.svm',out='out.csv')
+print("prediction done")

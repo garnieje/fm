@@ -4,17 +4,15 @@ from sklearn.feature_extraction import text
 from sklearn.feature_extraction.text import TfidfVectorizer
 seed = 1024
 np.random.seed(seed)
-path = "../input/"
+path = "/Users/jerome/Documents/kaggle/quora-question-pairs/data/"
 
 ft = ['question1','question2','question1_porter','question2_porter']
 train = pd.read_csv(path+"train_porter.csv")[ft]
 test = pd.read_csv(path+"test_porter.csv")[ft]
 # test['is_duplicated']=[-1]*test.shape[0]
 
-len_train = train.shape[0]
-
 data_all = pd.concat([train,test])
-print data_all
+print(data_all.shape)
 
 max_features = None
 ngram_range = (1,2)
@@ -31,6 +29,7 @@ for f in feats:
 vect_orig.fit(
     corpus
     )
+print("tfidf done for raw data")
 
 for f in feats:
     tfidfs = vect_orig.transform(data_all[f].values.tolist())
@@ -52,6 +51,7 @@ for f in feats:
 vect_orig.fit(
     corpus
     )
+print("tfidf done for porter data")
 
 for f in feats:
     tfidfs = vect_orig.transform(data_all[f].values.tolist())

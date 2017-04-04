@@ -7,7 +7,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import distance
 seed = 1024
 np.random.seed(seed)
-path = "../input/"
+path = "/Users/jerome/Documents/kaggle/quora-question-pairs/data/"
 
 train = pd.read_csv(path+"train_porter.csv")
 test = pd.read_csv(path+"test_porter.csv")
@@ -54,6 +54,7 @@ train_jaccard = train.astype(str).apply(lambda x:str_jaccard(x['question1'],x['q
 test_jaccard = test.astype(str).apply(lambda x:str_jaccard(x['question1'],x['question2']),axis=1)
 pd.to_pickle(train_jaccard,path+"train_jaccard.pkl")
 pd.to_pickle(test_jaccard,path+"test_jaccard.pkl")
+print("Jaccardi done")
 
 print('Generate porter jaccard')
 train_porter_jaccard = train.astype(str).apply(lambda x:str_jaccard(x['question1_porter'],x['question2_porter']),axis=1)
@@ -61,6 +62,7 @@ test_porter_jaccard = test.astype(str).apply(lambda x:str_jaccard(x['question1_p
 
 pd.to_pickle(train_porter_jaccard,path+"train_porter_jaccard.pkl")
 pd.to_pickle(test_porter_jaccard,path+"test_porter_jaccard.pkl")
+print("porter jaccardi done")
 
 
 # print('Generate levenshtein_1')

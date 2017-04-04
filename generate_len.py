@@ -9,7 +9,7 @@ from nltk.corpus import stopwords
 import nltk
 seed = 1024
 np.random.seed(seed)
-path = '../input/'
+path = '/Users/jerome/Documents/kaggle/quora-question-pairs/data/'
 
 train = pd.read_csv(path+"train_porter.csv").astype(str)
 test = pd.read_csv(path+"test_porter.csv").astype(str)
